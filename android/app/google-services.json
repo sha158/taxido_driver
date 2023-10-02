@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "190748121615",
+    "project_id": "taxido-c779b",
+    "storage_bucket": "taxido-c779b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190748121615:android:1b3a355929b2417493a17a",
+        "android_client_info": {
+          "package_name": "com.example.taxido"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5tfoaiYQiEa1cbx2Qb37gFK8HamTCEr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

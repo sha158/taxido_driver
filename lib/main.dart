@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:taxido/splashscreen/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:taxido/splashscreen/text_theme.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        textTheme: customTextTheme,
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see

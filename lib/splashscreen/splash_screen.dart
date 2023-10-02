@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:taxido/authentication/car_info.dart';
+import 'package:taxido/authentication/login_screen.dart';
 import 'package:taxido/authentication/sign_up.dart';
+import 'package:taxido/constants/colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxido/constants/texstyles.dart';
 import 'package:taxido/mainscreen/main_screen.dart';
 
@@ -17,7 +21,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
     Timer(const Duration(seconds: 2), () async {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Signup_Screen()));
+          .push(MaterialPageRoute(builder: (context) => LoginScreen()));
     });
   }
 
@@ -30,25 +34,38 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        color: Colors.green.shade800,
-        child: Center(
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+        Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            
             children: [
-              Image.asset("assets/lojo.png"),
-              const SizedBox(
-                height: 15,
-              ),
-              const Text(
-                "Taxido",
-                style: mediumTextStyle,
-              )
+             
+              Expanded( child: Opacity(opacity: 0.7, child: Image.asset("assets/taxi_6.jpg", fit: BoxFit.cover,))),
             ],
           ),
         ),
-      ),
+        Opacity(
+          opacity: 0.9,
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: kGreen,
+          ),
+        
+
+        ),
+        Center(
+          child: AnimatedTextKit(
+            animatedTexts: [
+              WavyAnimatedText("TAXIDO",textStyle: GoogleFonts.poppins(color: Colors.white,fontSize: 44,fontWeight: FontWeight.bold,),speed: Duration(milliseconds: 200))
+        
+            ],
+             ),
+        )
+      ]),
     );
   }
 }
