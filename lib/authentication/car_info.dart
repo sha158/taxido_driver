@@ -163,7 +163,7 @@ class _CarInfoState extends State<CarInfo> {
                               ),
                             ),
                             child: Text(
-                              'proceed',
+                              'login',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.white,
