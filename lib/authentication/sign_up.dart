@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxido/authentication/car_info.dart';
 import 'package:taxido/authentication/login_screen.dart';
 import 'package:taxido/constants/colors.dart';
 
@@ -149,7 +150,8 @@ class _Signup_ScreenState extends State<Signup_Screen> {
                           width: MediaQuery.of(context).size.width * 0.6,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Add your login logic here
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context)=>CarInfo()));
                             },
                             style: ElevatedButton.styleFrom(
                               primary: kGreen, // Background color
@@ -171,7 +173,7 @@ class _Signup_ScreenState extends State<Signup_Screen> {
                         GestureDetector(
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => Signup_Screen())),
+                                  builder: (context) => LoginScreen())),
                           child: Text(
                             "Already have an account? sign in",
                             style:
