@@ -1,7 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxido/Globals/functions.dart';
+import 'package:taxido/Globals/globals.dart';
 import 'package:taxido/authentication/sign_up.dart';
 import 'package:taxido/constants/colors.dart';
+import 'package:taxido/splashscreen/splash_screen.dart';
+import 'package:taxido/widgets/widget.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,13 +18,54 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isLLoading = false;
+  validateForm() {
+    if (!mailController.text.contains("@")) {
+      customErrorMessage(context, message: "Enter a valid email");
+    } else if (passwordController.text.isEmpty) {
+      customErrorMessage(context, message: "enter correct password");
+      // Fluttertoast.showToast(msg: "Password is required.");
+    } else {
+      loginDriverNow();
+    }
+  }
+
+  loginDriverNow() async {
+    try {
+      setState(() {
+        isLLoading = true;
+      });
+      final UserCredential firebaseUser =
+          await firebaseAuth.signInWithEmailAndPassword(
+        email: mailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      if (firebaseUser.user != null) {
+        currentFirebaseUser = firebaseUser.user;
+        setState(() {
+          isLLoading = false;
+        });
+
+        
+        // Fluttertoast.showToast(msg: "Login Successful.");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => MySplashScreen()));
+      }
+    } catch (msg) {
+      setState(() {
+        isLLoading = false;
+      });
+      customErrorMessage(context, message: msg.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         return false;
       },
       child: Scaffold(
@@ -95,6 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           bottom: BorderSide(
                                               color: Colors.grey.shade200))),
                                   child: TextField(
+                                    controller: mailController,
                                     decoration: InputDecoration(
                                         hintText: "email or phone",
                                         hintStyle:
@@ -105,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Container(
                                   decoration: BoxDecoration(),
                                   child: TextField(
+                                    controller: passwordController,
                                     decoration: InputDecoration(
                                         hintText: "password",
                                         hintStyle:
@@ -130,7 +180,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: ElevatedButton(
                               onPressed: () {
-                                // Add your login logic here
+                                validateForm();
+                                // Add your log
+                                //vain logic here
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: kGreen, // Background color
@@ -167,6 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Lower Container in Green
               ],
             ),
+            isLLoading ? LoadingWidget() : Container()
           ]),
         ),
       ),

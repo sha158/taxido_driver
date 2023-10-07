@@ -1,6 +1,11 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxido/Globals/globals.dart';
 import 'package:taxido/constants/colors.dart';
+import 'package:taxido/splashscreen/splash_screen.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class CarInfo extends StatefulWidget {
   const CarInfo({super.key});
@@ -10,12 +15,36 @@ class CarInfo extends StatefulWidget {
 }
 
 class _CarInfoState extends State<CarInfo> {
+  
   String? selectedCarModel;
   TextEditingController carnamecontroller = TextEditingController();
   TextEditingController carnumberController = TextEditingController();
   TextEditingController carcolorController = TextEditingController();
 
   String dropdownValue = 'Car';
+
+  saveCarInfo(){
+     Map driverCarInfoMap =
+    {
+      "car_color": carnamecontroller.text.trim(),
+      "car_number": carnumberController.text.trim(),
+      "car_model": carcolorController.text.trim(),
+      "type": selectedCarModel,
+    };
+
+    DatabaseReference driversRef = FirebaseDatabase.instance.ref().child("drivers");
+    driversRef.child(currentFirebaseUser!.uid).child("car_details").set(driverCarInfoMap);
+    showTopSnackBar(
+        snackBarPosition: SnackBarPosition.bottom,
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: "Car details has been saved",
+        ),
+      );
+
+    
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> MySplashScreen ()));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +122,7 @@ class _CarInfoState extends State<CarInfo> {
                                         bottom: BorderSide(
                                             color: Colors.grey.shade200))),
                                 child: TextField(
+                                  controller: carnumberController,
                                   decoration: InputDecoration(
                                       hintText: "Car Model",
                                       hintStyle: TextStyle(color: Colors.grey),
@@ -105,7 +135,10 @@ class _CarInfoState extends State<CarInfo> {
                                         bottom: BorderSide(
                                             color: Colors.grey.shade200))),
                                 child: TextField(
+                                  controller: carnamecontroller,
+
                                   decoration: InputDecoration(
+                                    
                                       hintText: "Car Name",
                                       hintStyle: TextStyle(color: Colors.grey),
                                       border: InputBorder.none),
@@ -117,6 +150,7 @@ class _CarInfoState extends State<CarInfo> {
                                         bottom: BorderSide(
                                             color: Colors.grey.shade200))),
                                 child: TextField(
+                                  controller: carcolorController,
                                   decoration: InputDecoration(
                                       hintText: "Car Colour",
                                       hintStyle: TextStyle(color: Colors.grey),
@@ -153,6 +187,12 @@ class _CarInfoState extends State<CarInfo> {
                           width: MediaQuery.of(context).size.width * 0.6,
                           child: ElevatedButton(
                             onPressed: () {
+                              if(carnamecontroller.text.isNotEmpty
+                      && carnumberController.text.isNotEmpty
+                      && carcolorController.text.isNotEmpty && selectedCarModel != null)
+                  {
+                    saveCarInfo();
+                  }
                               // Add your login logic here
                             },
                             style: ElevatedButton.styleFrom(

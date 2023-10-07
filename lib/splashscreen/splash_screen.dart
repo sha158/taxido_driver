@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:taxido/Globals/globals.dart';
 import 'package:taxido/authentication/car_info.dart';
 import 'package:taxido/authentication/login_screen.dart';
 import 'package:taxido/authentication/sign_up.dart';
@@ -18,10 +19,19 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
-  startTimer() {
-    Timer(const Duration(seconds: 2), () async {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+  startTimer()
+  {
+    Timer(const Duration(seconds: 3), () async
+    {
+      if(await firebaseAuth.currentUser != null)
+      {
+        currentFirebaseUser = firebaseAuth.currentUser;
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> MainScreen()));
+      }
+      else
+      {
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> LoginScreen()));
+      }
     });
   }
 

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:taxido/constants/colors.dart';
 import 'package:taxido/splashscreen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:taxido/splashscreen/text_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  var status = await Firebase.initializeApp();
+  print(status);
   runApp(MyApp());
 }
 
@@ -37,7 +40,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:const MySplashScreen(),
+      // home: Scaffold(
+      //   body: Center(
+      //     child: LoadingAnimationWidget.inkDrop(color: kGreen, size: 100),
+      //   ),
+      // ),
+      home: const MySplashScreen(),
     );
   }
 }
